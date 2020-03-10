@@ -14,8 +14,10 @@
 """
 # import standard libraries
 import numpy as np
-import utilityfunctions as uf
 import pandas as pd
+
+# import user-defined libraries
+import utilityfunctions as uf
 
 # load training data
 x_training, y_training = uf.load_data('training-data.csv')
