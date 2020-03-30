@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import time
+import timeit
+
 
 def eval_hypothesis_function(w, x):
     """Evaluate the hypothesis function"""
@@ -111,6 +113,7 @@ def gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate
     """ run the gradient descent algorith for optimisation"""
 
     # gradient descent algorithm
+    time = 0
     while True:
 
         # compute gradient of cost function
@@ -124,14 +127,14 @@ def gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate
         L2_norm = compute_L2_norm(gradient_of_cost_function)
         if L2_norm < stopping_criteria:
             break
+        time += 1
     # Print w parameters
-    print("\n")
     print("--"*23)
     print("w parameter")
     print("--"*23)
     for i in range(0,len(w)):
         print("w"+str(i)+": "+str(w[i][0]))
-
+    print("Iterations: "+str(time))
     return w
 
 def load_testing_data(path_and_filename, mean_list, std_list):
@@ -187,3 +190,20 @@ def predict(w,x,text):
     print("--"*23)
     for i in range(0,len(x)):
         print(np.matmul(x[i],w.T[0]))
+
+def times(x, y, stopping_criteria,learning_rates):
+    print("\n\n\n\n\n\n")
+    print("--"*23)
+    print("Times")
+    print("--"*23)
+    for learning_rate in learning_rates:
+        # predicts
+        print("\n")
+        print("--"*23)
+        print("LEARNING RATE: "+str(learning_rate))
+        print("--"*23)
+        w = np.array([[0.0]*x.T.shape[0]]).T
+        start_time = time.time()
+        gradient_descent(x, y, w, stopping_criteria, learning_rate)
+        print("--- %s seconds ---" % (time.time() - start_time))
+

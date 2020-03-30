@@ -35,3 +35,8 @@ x_testing = uf.load_testing_data('testing-data-multivariate.csv', mean_list, std
 
 # predict with testing data and w
 uf.predict(w,x_testing,"Last-mile cost [predicted]")
+
+# estimate all this learning rate
+learning_rates = [0.0005, 0.001, 0.005, 0.01, 0.05, 0.1, 0.5]
+# generate time table
+uf.times(x_training, y_training, stopping_criteria,learning_rates)
