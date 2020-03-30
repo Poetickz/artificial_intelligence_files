@@ -14,13 +14,23 @@ import timeit
 
 
 def eval_hypothesis_function(w, x):
+    """
+    INPUT: w: numpy array with all w values
+           x: numpy array with all x data set values
+    OUTPUT: Return the multiplication of the w.T & x.T
+    """
     """Evaluate the hypothesis function"""
     return np.matmul(w.T,x.T)
 
 
 def compute_gradient_of_cost_function(x, y, w):
     """compute gradient of cost function"""
-
+    """
+    INPUT: w: numpy array with all w values
+           x: numpy array with all x data set values
+           y: numpy array with all y data set values
+    OUTPUT: Return the gradient_of_cost_function
+    """
     # compute number of training samples
     Nfeatures = x.shape[1]
     Nsamples = x.shape[0]
@@ -47,10 +57,20 @@ def compute_gradient_of_cost_function(x, y, w):
 
 def compute_L2_norm(gradient_of_cost_function):
     """compute L2-norm of gradient of cost function"""
+    """
+    INPUT: gradient_of_cost_function
+    OUTPUT: Return the sum of all square element of gradient_of_cost_function
+    """
     return np.linalg.norm(gradient_of_cost_function)
 
 def feature_scaling(data, mean_value, std_value):
     """ standarize the x data and saves mean value & std value"""
+    """
+    INPUT: data: data from de data set that will be standarized (numpy array)
+           mean_value: mean_value (float)
+           std_value: standard variation value (float)
+    OUTPUT: Returns de data set standarized, the mean value and std value
+    """
     if mean_value == 0 and std_value == 0:
         std_value=data.std()
         mean_value=data.mean()
@@ -59,7 +79,11 @@ def feature_scaling(data, mean_value, std_value):
 
 def load_data(path_and_filename):
     """ load data from comma-separated-value (CSV) file """
-
+    """
+    INPUT: path_and_filename: the csv file name
+    OUTPUT: Return the x_data (numpy array), y_data(numpy array), 
+            means (numpy array float) and stds (numpy array float)
+    """
     # load training-data file
     training_data = pd.read_csv(path_and_filename)
 
@@ -117,7 +141,14 @@ def load_data(path_and_filename):
 
 def gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate):
     """ run the gradient descent algorith for optimisation"""
-
+    """
+    INPUT: w: numpy array with all w values
+           x_training: numpy array with all x data set values
+           y_training: numpy array with all y data set values
+           stopping_criteria: float value
+           learning rate: float value
+    OUTPUT: Returns the w values in a numpy array float
+    """
     # gradient descent algorithm
     time = 0
     while True:
@@ -145,7 +176,12 @@ def gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate
 
 def load_testing_data(path_and_filename, mean_list, std_list):
     """ load testing data from comma-separated-value (CSV) file """
-
+    """
+    INPUT: path_and_filename: the csv file name
+            mean_list: a list of means from training data set
+            std_list: a list of stds from training data set
+    OUTPUT: Return the x_data (numpy array)
+    """
     # load testing-data file
     testing_data = pd.read_csv(path_and_filename)
     
@@ -188,7 +224,12 @@ def load_testing_data(path_and_filename, mean_list, std_list):
 
 def predict(w,x,text):
     """ predict y with the w """
-
+    """
+    INPUT:  w: the numpy array of w values
+            x: the numpy array of x values
+            text: the title of the y
+    OUTPUT: NONE
+    """
     # predicts
     print("\n")
     print("--"*23)
@@ -198,17 +239,26 @@ def predict(w,x,text):
         print(np.matmul(x[i],w.T[0]))
 
 def times(x, y, stopping_criteria,learning_rates):
+    # This method test the time of the gradient descent method
+    """
+    INPUT: x: numpy array with all x data set values
+           y: numpy array with all y data set values
+           stopping_criteria: float value
+           learning rate: float value
+    OUTPUT: NONE
+    """
     print("\n\n\n\n\n\n")
     print("--"*23)
     print("Times")
     print("--"*23)
     for learning_rate in learning_rates:
-        # predicts
         print("\n")
         print("--"*23)
         print("LEARNING RATE: "+str(learning_rate))
         print("--"*23)
+        #initialize w
         w = np.array([[0.0]*x.T.shape[0]]).T
+        # runs tests
         start_time = time.time()
         gradient_descent(x, y, w, stopping_criteria, learning_rate)
         print("--- %s seconds ---" % (time.time() - start_time))

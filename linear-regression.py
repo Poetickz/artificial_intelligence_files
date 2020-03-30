@@ -17,6 +17,11 @@ import utilityfunctions as uf
 
 def main:
   # runs main code
+  """
+  INPUT: NONE
+  OUTPUT: NONE
+  """
+
 
   # load training data
   x_training, y_training, mean_list, std_list = uf.load_data('training-data-multivariate.csv')
