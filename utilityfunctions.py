@@ -177,13 +177,13 @@ def load_testing_data(path_and_filename, mean_list, std_list):
     # return standarize x_data values in a numpy array
     return x
 
-def predict(w,x):
+def predict(w,x,text):
     """ predict y with the w """
 
     # predicts
     print("\n")
     print("--"*23)
-    print("Last-mile cost [predicted]")
+    print(text)
     print("--"*23)
     for i in range(0,len(x)):
         print(np.matmul(x[i],w.T[0]))

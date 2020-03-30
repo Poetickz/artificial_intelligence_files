@@ -34,4 +34,4 @@ w = uf.gradient_descent(x_training, y_training, w, stopping_criteria, learning_r
 x_testing = uf.load_testing_data('testing-data-multivariate.csv', mean_list, std_list)
 
 # predict with testing data and w
-uf.predict(w,x_testing)
+uf.predict(w,x_testing,"Last-mile cost [predicted]")
