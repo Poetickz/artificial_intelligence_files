@@ -82,6 +82,8 @@ def load_data(path_and_filename):
     
     # Transpose to columns
     x_data = np.array(new_scaled_x).T
+
+    # prints scaled x data
     print("\n")
     print("--"*23)
     print("Training Data Scaled")
