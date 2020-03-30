@@ -30,4 +30,5 @@ stopping_criteria = 0.01
 # run the gradient descent method for parameter optimisation purposes
 w = uf.gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate)
 
-#
+# load testing data
+x_testing = uf.load_testing_data('testing-data-multivariate.csv', mean_list, std_list)

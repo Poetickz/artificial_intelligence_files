@@ -18,10 +18,10 @@ def compute_gradient_of_cost_function(x, y, w):
     Nsamples = x.shape[0]
 
     # evaluate hypotesis function
-    y = y.T
     hypothesis_function = eval_hypothesis_function(w, x)
 
     # compute difference between hypothesis function and label
+    y = y.T
     residual =  hypothesis_function - y
 
     # multiply the residual by the input features x; 
@@ -41,10 +41,11 @@ def compute_L2_norm(gradient_of_cost_function):
     """compute L2-norm of gradient of cost function"""
     return np.linalg.norm(gradient_of_cost_function)
 
-def feature_scaling(data):
+def feature_scaling(data, mean_value, std_value):
     """ standarize the x data and saves mean value & std value"""
-    mean_value = data.mean()
-    std_value =  data.std()
+    if mean_value == 0 and std_value == 0:
+        std_value=data.std()
+        mean_value=data.mean()
     scaling_scores = (data - mean_value) / std_value
     return scaling_scores, mean_value, std_value
 
@@ -80,7 +81,7 @@ def load_data(path_and_filename):
 
     # scales features
     for feature in x_data.T:
-        new_data, mean_value, std_value = feature_scaling(feature)
+        new_data, mean_value, std_value = feature_scaling(feature,0,0)
         new_scaled_x.append(new_data)
         mean_list.append(mean_value)
         std_list.append(std_value)
@@ -124,7 +125,32 @@ def gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate
         if L2_norm < stopping_criteria:
             break
     # Print w parameters
+    print("\n")
+    print("--"*23)
+    print("w parameter")
+    print("--"*23)
     for i in range(0,len(w)):
         print("w"+str(i)+": "+str(w[i][0]))
 
     return w
+
+def load_testing_data(path_and_filename, mean_list, std_list):
+    """ load testing data from comma-separated-value (CSV) file """
+
+    # load testing-data file
+    testing_data = pd.read_csv(path_and_filename)
+    
+    # getting sizes
+    n_rows, n_columns = testing_data.shape
+    
+    # Converting dataframe to numpy array
+    x_data = pd.DataFrame.to_numpy(testing_data.iloc[:,0:n_columns])
+
+    # standarize x_data values
+    new_scaled_x = []
+    for x,mean,std in zip(x_data.T,mean_list,std_list):
+        new_data = feature_scaling(x,mean,std)
+        new_scaled_x.append(np.array(new_data[0]))
+
+    # return standarize x_data values in a numpy array
+    return np.array(new_scaled_x)
