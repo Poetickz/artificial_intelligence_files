@@ -1,5 +1,11 @@
-"""utility libraries for AI"""
+""" utililtyfunctions.py
+    This script have all utility fuctions
 
+    Author: Alan Rocha González
+    Institution: Universidad de Monterrey
+    First created: Sun 30 March, 2020
+    Email: alan.rocha@udem.edu
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
