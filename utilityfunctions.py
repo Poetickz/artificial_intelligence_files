@@ -69,7 +69,7 @@ def load_data(path_and_filename):
 
     # prints x and y data 
     print("--"*23)
-    print("Training Data Outputs")
+    print("Training Data")
     print("--"*23)
     for x,y in zip(x_data,y):
         print(x,y)
@@ -101,7 +101,7 @@ def load_data(path_and_filename):
     one_data = np.ones(shape=n_rows)
 
     # concatenate one_data with x_data
-    x = np.column_stack((x_data,one_data))
+    x = np.column_stack((one_data,x_data))
     
     # return x and y data
     return x, y_data, mean_list, std_list
@@ -146,11 +146,44 @@ def load_testing_data(path_and_filename, mean_list, std_list):
     # Converting dataframe to numpy array
     x_data = pd.DataFrame.to_numpy(testing_data.iloc[:,0:n_columns])
 
+    # prints traininh data
+    print("--"*23)
+    print("Testing Data")
+    print("--"*23)
+    for i in x_data:
+        print(i)
+
     # standarize x_data values
     new_scaled_x = []
     for x,mean,std in zip(x_data.T,mean_list,std_list):
         new_data = feature_scaling(x,mean,std)
         new_scaled_x.append(np.array(new_data[0]))
+    x_data = np.array(new_scaled_x).T
+
+    # prints scaled x data
+    print("\n")
+    print("--"*23)
+    print("Testing Data Scaled")
+    print("--"*23)
+    for x,y in zip(x_data, x_data):
+        print(x)
+    
+    # create a ones-vector of size as x
+    one_data = np.ones(shape=n_rows)
+
+    # concatenate one_data with x_data
+    x = np.column_stack((one_data, x_data))
 
     # return standarize x_data values in a numpy array
-    return np.array(new_scaled_x)
+    return x
+
+def predict(w,x):
+    """ predict y with the w """
+
+    # predicts
+    print("\n")
+    print("--"*23)
+    print("Last-mile cost [predicted]")
+    print("--"*23)
+    for i in range(0,len(x)):
+        print(np.matmul(x[i],w.T[0]))

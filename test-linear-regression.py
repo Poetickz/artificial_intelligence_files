@@ -19,7 +19,7 @@ import utilityfunctions as uf
 x_training, y_training, mean_list, std_list = uf.load_data('training-data-multivariate.csv')
 
 # declare and initialise hyperparameters
-learning_rate = 0.05
+learning_rate = 0.0005
 
 # Initailize all w
 w = np.array([[0.0]*x_training.T.shape[0]]).T
@@ -32,3 +32,6 @@ w = uf.gradient_descent(x_training, y_training, w, stopping_criteria, learning_r
 
 # load testing data
 x_testing = uf.load_testing_data('testing-data-multivariate.csv', mean_list, std_list)
+
+# predict with testing data and w
+uf.predict(w,x_testing)
