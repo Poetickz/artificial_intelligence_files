@@ -7,27 +7,31 @@ import time
 
 def eval_hypothesis_function(w, x):
     """Evaluate the hypothesis function"""
-    return np.matmul(w.T, x)
+    return np.matmul(w.T,x.T)
 
 
 def compute_gradient_of_cost_function(x, y, w):
     """compute gradient of cost function"""
 
     # compute number of training samples
-    N = x.shape[1]
+    Nfeatures = x.shape[1]
+    Nsamples = x.shape[0]
 
     # evaluate hypotesis function
+    y = y.T
     hypothesis_function = eval_hypothesis_function(w, x)
 
-    # compute difference between hypothesis function and labels
-    residual =  np.subtract(hypothesis_function, y)
+    # compute difference between hypothesis function and label
+    residual =  hypothesis_function - y
 
-    # multiply the residual by the input features x; sum the result up
-    # and divide the total by the number of samples N
-    gradient_of_cost_function = ((residual*x).sum(axis=1)/N)
+    # multiply the residual by the input features x; 
+    gradient_of_cost_function = np.matmul(residual,x)
 
-    # reshape the gradient of cost function from a 1x2 to a 2x1 matrix
-    gradient_of_cost_function = np.reshape(gradient_of_cost_function,(2,1))
+    # sum the result up and divide the total by the number of samples N
+    gradient_of_cost_function = sum(gradient_of_cost_function)/Nsamples
+    
+    # reshape the gradient of cost function from a 1xNsample to a Nsamplex1 matrix
+    gradient_of_cost_function = np.reshape(gradient_of_cost_function,(Nfeatures,1))
 
     # return the gradient of cost function
     return gradient_of_cost_function
@@ -35,7 +39,7 @@ def compute_gradient_of_cost_function(x, y, w):
 
 def compute_L2_norm(gradient_of_cost_function):
     """compute L2-norm of gradient of cost function"""
-    return np.sqrt(np.sum(gradient_of_cost_function**2))
+    return np.linalg.norm(gradient_of_cost_function)
 
 def feature_scaling(data):
     """ standarize the x data and saves mean value & std value"""
@@ -60,6 +64,7 @@ def load_data(path_and_filename):
     # to numpy
 
     y = pd.DataFrame.to_numpy(training_data.iloc[:,-1]).reshape(n_rows, 1)
+    y_data = y
 
     # prints x and y data 
     print("--"*23)
@@ -98,15 +103,14 @@ def load_data(path_and_filename):
     x = np.column_stack((x_data,one_data))
     
     # return x and y data
-    return x, y, mean_list, std_list
+    return x, y_data, mean_list, std_list
 
 
 def gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate):
     """ run the gradient descent algorith for optimisation"""
 
     # gradient descent algorithm
-    L2_norm = 100.0
-    while L2_norm > stopping_criteria:
+    while True:
 
         # compute gradient of cost function
         gradient_of_cost_function = compute_gradient_of_cost_function(x_training,
@@ -117,8 +121,10 @@ def gradient_descent(x_training, y_training, w, stopping_criteria, learning_rate
 
         # compute L2 Norm
         L2_norm = compute_L2_norm(gradient_of_cost_function)
+        if L2_norm < stopping_criteria:
+            break
+    # Print w parameters
+    for i in range(0,len(w)):
+        print("w"+str(i)+": "+str(w[i][0]))
 
-        # print parameters
-        print('w:{}, L2:{}'.format(w, L2_norm))
-
-    return None
+    return w
