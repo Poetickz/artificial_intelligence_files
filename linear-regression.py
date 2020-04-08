@@ -15,7 +15,7 @@ import pandas as pd
 # import user-defined libraries
 import utilityfunctions as uf
 
-def main:
+def main():
   # runs main code
   """
   INPUT: NONE
